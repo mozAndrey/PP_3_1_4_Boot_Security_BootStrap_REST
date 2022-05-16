@@ -4,8 +4,22 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
-
-
+<div sec:authorize="hasAnyRole('USER','ADMIN')">
+<h1>Welcome <span sec:authentication="principal.username"></span> User</h1>
+    <br>
+    <br>
+<a th:href="@{user/info/{id}(id=${#authentication.getName()})}">User info</a>
+<br>
+<br>
+<a th:href="@{/logout}">Logout</a>
+<br>
+<br>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <h3>You will see this only if you are ADMIN</h3>
+        <p>
+            <a th:href="@{/admin/listOfUsers}">Admin Home</a>
+        </p>
+    </div>
+</div>
 </body>
 </html>

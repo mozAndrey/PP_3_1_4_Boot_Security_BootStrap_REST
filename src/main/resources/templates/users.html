@@ -1,0 +1,54 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Users</title>
+    <style>table th, table td {
+        padding: 5px;
+    }</style>
+</head>
+<body>
+<div sec:authorize="hasRole('ADMIN')">
+<h1>Users in DB</h1>
+<table border="1">
+    <tr>
+        <th>User username</th>
+        <th>User Name</th>
+        <th>User Lastname</th>
+        <th>User Email</th>
+        <th>User Password</th>
+    </tr>
+    <tr th:each="usr, state : ${listOfUsers}">
+        <td th:utext="${usr.getUsername()}">User username</td>
+        <td th:utext="${usr.getName()}">User Name</td>
+        <td th:utext="${usr.getLastname()}">User Lastname</td>
+        <td th:utext="${usr.getEmail()}">User Email</td>
+        <td th:utext="${usr.getPassword()}">User Password</td>
+    </tr>
+</table>
+<br>
+<br>
+<br>
+<input type="button" value="Add new User"
+       onclick="window.location.href = 'addNewUser'"/>
+<br>
+<br>
+<br>
+<br>
+
+
+    <form method="get" action="/admin/delete">
+        <label for="idToDelete">Insert id to delete</label>
+        <input name="idToDelete" type="text" id="idToDelete">
+    </form>
+<br>
+<br>
+<form method="get" action="/admin/update">
+    <label for="idToUpdate">Insert id to update</label>
+    <input name="idToUpdate" type="text" id="idToUpdate"></form>
+<br>
+<br>
+<a th:href="@{/logout}">Logout</a>
+</div>
+</body>
+</html>

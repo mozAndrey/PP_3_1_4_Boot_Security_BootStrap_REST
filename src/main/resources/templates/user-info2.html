@@ -1,0 +1,38 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Users</title>
+    <style>table th, table td {
+        padding: 5px;
+    }</style>
+</head>
+<body>
+<div sec:authorize="hasAnyRole('USER','ADMIN')">
+    <h1>User's <span sec:authentication="principal.username"></span> info</h1>
+    <table border="1">
+        <tr>
+            <th>User username</th>
+            <th>User Name</th>
+            <th>User Lastname</th>
+            <th>User Email</th>
+            <th>User Password</th>
+        </tr>
+        <tr th:object="${userInfo}">
+            <td th:utext="${userInfo.username}">User username</td>
+            <td th:utext="${userInfo.name}">User Name</td>
+            <td th:utext="${userInfo.lastname}">User Lastname</td>
+            <td th:utext="${userInfo.email}">User Email</td>
+            <td th:utext="${userInfo.password}">User Password</td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <a th:href="@{/user/update/{id}(id=${#authentication.getName()})}">Update Info</a>
+    <br>
+    <br>
+    <br>
+    <a th:href="@{/logout}">Logout</a>
+</div>
+</body>
+</html>
