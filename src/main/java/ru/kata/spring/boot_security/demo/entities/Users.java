@@ -42,6 +42,7 @@ public class Users implements UserDetails {
     private String role;
 
     @OneToOne
+    @Transient
     @JoinColumn(name = "roles")
     private Role roles;
 
@@ -120,33 +121,21 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        if (username != null) {
-            return true;
-        }
-        return false;
+        return username != null;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        if (username != null) {
-            return true;
-        }
-        return false;
+        return username != null;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        if (password != null) {
-            return true;
-        }
-        return false;
+        return password != null;
     }
 
     public boolean isEnabled() {
-        if (username != null) {
-            return true;
-        }
-        return false;
+        return username != null;
     }
 
     public void setUsername(String username) {

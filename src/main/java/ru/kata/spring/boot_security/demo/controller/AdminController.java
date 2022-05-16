@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.DAO.UserDaoImpl;
 import ru.kata.spring.boot_security.demo.entities.Users;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/admin")
@@ -36,7 +39,7 @@ public class AdminController {
 
     @GetMapping(value = "/update")
     public String updateUser(Model model, @RequestParam("idToUpdate") String username) {
-        model.addAttribute("userToUpdate", userService.findById(username));
+        model.addAttribute("userToUpdate",userService.findById(username));
         return "update";
     }
 

@@ -6,9 +6,12 @@ import ru.kata.spring.boot_security.demo.entities.Users;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Repository
 public class UserDaoImpl implements UserDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -37,7 +40,9 @@ public class UserDaoImpl implements UserDAO {
 
     @Override
     public void update(Users users) {
+        LOGGER.info("---------------"+users.getRoles()+"-----------");
         users.setEnabled(1);
+        users.setRoles(users.getRoles());
         entityManager.merge(users);
     }
 
