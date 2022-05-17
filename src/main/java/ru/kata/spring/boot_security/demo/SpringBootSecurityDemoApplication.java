@@ -9,6 +9,7 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class SpringBootSecurityDemoApplication {
@@ -16,16 +17,6 @@ public class SpringBootSecurityDemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootSecurityDemoApplication.class, args);
 	}
-
-	@Bean
-	HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-		return new HiddenHttpMethodFilter();
-	}
-//@Bean
-//public FilterRegistrationBean hiddenHttpMethodFilter() {
-//	FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new HiddenHttpMethodFilter());
-//	filterRegistrationBean.setUrlPatterns(Arrays.asList("/*"));
-//	return filterRegistrationBean;
 }
 
 

@@ -1,17 +1,16 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.DAO.UserDaoImpl;
-import ru.kata.spring.boot_security.demo.entities.Users;
+import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/admin")
+@Secured(value = {"ROLE_ADMIN"})
 public class AdminController {
     private UserService userService;
 
@@ -27,33 +26,31 @@ public class AdminController {
     }
 
     @GetMapping(value = "/addNewUser")
-    public String addNewUser(@ModelAttribute("user") Users users) {
+    public String addNewUser(@ModelAttribute("user") User user) {
         return "user-info";
     }
 
     @PostMapping(value = "/saveUser")
-    public String saveUser(@ModelAttribute("user") Users users) {
-        userService.addUser(users);
+    public String saveUser(@ModelAttribute("user") User user) {
+        userService.addUser(user);
         return "redirect:/admin/listOfUsers";
     }
 
     @GetMapping(value = "/update")
-    public String updateUser(Model model, @RequestParam("idToUpdate") String username) {
-        model.addAttribute("userToUpdate",userService.findById(username));
+    public String updateUser(Model model, @RequestParam("idToUpdate") Long id) {
+        model.addAttribute("userToUpdate", userService.findById(id));
         return "update";
     }
 
     @PatchMapping(value = "/update/u")
-    public String update(@ModelAttribute("userToUpdate") Users users) {
-        userService.update(users);
+    public String update(@ModelAttribute("userToUpdate") User user) {
+        userService.update(user);
         return "redirect:/admin/listOfUsers";
     }
 
     @RequestMapping(value = "/delete")
-    public String deleteUser(@RequestParam("idToDelete") String username) {
-        userService.deleteUserById(username);
+    public String deleteUser(@RequestParam("id") long id) {
+        userService.deleteUserById(id);
         return "redirect:/admin/listOfUsers";
     }
-
-
 }

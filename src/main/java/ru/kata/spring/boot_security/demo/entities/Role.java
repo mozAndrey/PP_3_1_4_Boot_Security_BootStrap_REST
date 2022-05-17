@@ -1,52 +1,35 @@
 package ru.kata.spring.boot_security.demo.entities;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-@Component
-@Table(name = "authorities")
-public class Role implements Serializable, GrantedAuthority {
+@Getter
+@Setter
+@NoArgsConstructor
+public class Role implements GrantedAuthority {
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Transient
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
-    @ManyToOne(targetEntity = Users.class)
-    @JoinColumn(name = "username")
-    private Users users;
-
-    @Column
     private String authority;
+
+    public Role(String authority) {
+        this.authority = authority;
+    }
 
     @Override
     public String getAuthority() {
         return authority;
-    }
-
-    public String getName() {
-        return users.getUsername();
-    }
-
-    public Users getUsers() {
-        return users;
-    }
-
-    @Autowired
-    public void setUsers(Users users) {
-        this.users = users;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
-
-    public Long getId() {
-        return id;
     }
 }

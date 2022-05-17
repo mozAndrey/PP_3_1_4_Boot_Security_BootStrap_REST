@@ -1,44 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Update User</title>
 </head>
 <body>
 <div sec:authorize="hasAnyRole('ADMIN','USER')">
-<h2>Update User</h2>
-<br>
-<form th:method="PATCH" th:action="@{update/u/}" th:object="${userToUpdate}">
-    <label for="id">Username</label>
-    <input type="text" th:field="*{username}" id="id">
+    <h2>Update User</h2>
     <br>
-    <br>
-    <label for="name">Name</label>
-    <input type="text" th:field="*{name}" id="name">
-
-    <br>
-    <br>
-
-    <label for="lastName">Last Name</label>
-    <input type="text" th:field="*{lastname}" id="lastName">
-
-    <br>
-    <br>
-
-    <label for="email">Email</label>
-    <input type="text" th:field="*{email}" id="email">
-    <br>
-    <br>
-    <label for="pass">Password</label>
-    <input type="text" th:field="*{password}" id="pass">
-    <br>
-    <br>
-
-    <input type="submit" value="Update User"/>
-<br>
-<br>
-    <a th:href="@{/logout}">Logout</a>
-</form>
+    <form th:method="PATCH" th:action="@{update/u/}" th:object="${userToUpdate}">
+        <label for="id">ID</label>
+        <input type="hidden" th:field="*{id}" id="id">
+        <br>
+        <br>
+        <label for="username">UserName</label>
+        <input type="hidden" th:field="*{username}" id="username">
+        <br>
+        <br>
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name">
+        <br>
+        <br>
+        <label for="lastName">Last Name</label>
+        <input type="text" th:field="*{lastname}" id="lastName">
+        <br>
+        <br>
+        <label for="email">Email</label>
+        <input type="text" th:field="*{email}" id="email">
+        <br>
+        <br>
+        <label for="pass">Password</label>
+        <input type="text" th:field="*{password}" id="pass">
+        <br>
+        <br>
+        <input type="submit" value="Update User"/>
+        <br>
+        <br>
+        <a th:href="@{/logout}">Logout</a>
+    </form>
 </div>
 </body>
 </html>

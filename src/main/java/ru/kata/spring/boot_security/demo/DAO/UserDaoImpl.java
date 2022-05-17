@@ -1,49 +1,46 @@
 package ru.kata.spring.boot_security.demo.DAO;
 
 import org.springframework.stereotype.Repository;
-import ru.kata.spring.boot_security.demo.entities.Users;
+import ru.kata.spring.boot_security.demo.entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Repository
 public class UserDaoImpl implements UserDAO {
-
-    private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
-
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public List<Users> getListOfUsers() {
-        return entityManager.createQuery("select role from Users role", Users.class).getResultList();
+    public List<User> getListOfUsers() {
+        return entityManager.createQuery("select user from User user", User.class).getResultList();
     }
 
     @Override
-    public void addUser(Users users) {
-        entityManager.persist(users);
+    public void addUser(User user) {
+        entityManager.persist(user);
     }
 
     @Override
-    public Users findById(String username) {
-        return entityManager.createQuery("select users from Users users where users.username=:username",Users.class)
-                .setParameter("username",username)
-                .getSingleResult();
+    public User findById(Long id) {
+        return entityManager.find(User.class, id);
     }
 
     @Override
-    public void deleteById(String username) {
-        entityManager.remove(findById(username));
+    public void deleteById(Long id) {
+        entityManager.remove(entityManager.find(User.class, id));
     }
 
     @Override
-    public void update(Users users) {
-        LOGGER.info("---------------"+users.getRoles()+"-----------");
-        users.setEnabled(1);
-        users.setRoles(users.getRoles());
-        entityManager.merge(users);
+    public void update(User user) {
+        entityManager.merge(user);
+    }
+
+    @Override
+    public User findByUserName(String username) {
+        return entityManager.createQuery("select user from User user where user.username=:username", User.class)
+                .setParameter("username", username).getSingleResult();
     }
 
 

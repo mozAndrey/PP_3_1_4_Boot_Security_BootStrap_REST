@@ -1,4 +1,4 @@
-<html xmlns:th="https://www.thymeleaf.org"
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8"/>
@@ -12,18 +12,20 @@
     <h1>User's <span sec:authentication="principal.username"></span> info</h1>
     <table border="1">
         <tr>
-            <th>User username</th>
             <th>User Name</th>
             <th>User Lastname</th>
             <th>User Email</th>
-            <th>User Password</th>
         </tr>
         <tr th:object="${userInfo}">
-            <td th:utext="${userInfo.username}">User username</td>
+            <div sec:authorize="hasRole('ADMIN')">
+                <td th:utext="${userInfo.username}">User username</td>
+            </div>
             <td th:utext="${userInfo.name}">User Name</td>
             <td th:utext="${userInfo.lastname}">User Lastname</td>
             <td th:utext="${userInfo.email}">User Email</td>
-            <td th:utext="${userInfo.password}">User Password</td>
+            <div sec:authorize="hasRole('ADMIN')">
+                <td th:utext="${userInfo.password}">User Password</td>
+            </div>
         </tr>
     </table>
     <br>

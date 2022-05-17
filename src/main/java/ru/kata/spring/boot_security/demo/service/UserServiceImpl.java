@@ -1,19 +1,25 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.RoleDAOImpl;
 import ru.kata.spring.boot_security.demo.DAO.UserDAO;
-import ru.kata.spring.boot_security.demo.entities.Users;
+import ru.kata.spring.boot_security.demo.entities.User;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
-
+public class UserServiceImpl implements UserService, UserDetailsService {
     private UserDAO userDAO;
     private RoleDAOImpl roleDAOImpl;
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public void setRoleDAO(RoleDAOImpl roleDAOImpl) {
@@ -21,40 +27,63 @@ public class UserServiceImpl implements UserService {
     }
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO) {
+    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
     @Override
-    public List<Users> getListUsers() {
+    public List<User> getListUsers() {
         return userDAO.getListOfUsers();
     }
 
     @Override
     @Transactional
-    public void addUser(Users users) {
-        users.setEnabled(1);
-        userDAO.addUser(users);
-        users.setRoles(roleDAOImpl.addRole(users));
+    public void addUser(User user) {
+        user.setRoles(Collections.singleton(roleDAOImpl.findRole("ROLE_USER")));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDAO.addUser(user);
     }
 
     @Override
-    public Users findById(String username) {
-        return userDAO.findById(username);
-    }
-
-    @Override
-    @Transactional
-    public void deleteUserById(String username) {
-        Users users = userDAO.findById(username);
-        users.setRoles(null);
-        roleDAOImpl.deleteByUsername(userDAO.findById(username));
-        userDAO.deleteById(username);
+    public User findById(Long id) {
+        return userDAO.findById(id);
     }
 
     @Override
     @Transactional
-    public void update(Users users) {
-        userDAO.update(users);
+    public void deleteUserById(Long id) {
+        userDAO.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void update(User user) {
+        if (user.getPassword().startsWith("$2a$10$") && user.getPassword().length() == 60) {
+            user.setPassword(user.getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        user.setRoles(Collections.singleton(roleDAOImpl.findRole("ROLE_USER")));
+        userDAO.update(user);
+    }
+
+    @Override
+    public User findByUserName(String username) {
+        return userDAO.findByUserName(username);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        try {
+           return userDAO.findByUserName(username);
+        } catch (UsernameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

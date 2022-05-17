@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.Role;
-import ru.kata.spring.boot_security.demo.entities.Users;
+import ru.kata.spring.boot_security.demo.entities.User;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.Collections;
 
 @Component
 @Transactional
@@ -23,18 +24,17 @@ public class Init {
     @PostConstruct
     @Transactional
     public void postConstruct() {
-        Users users = new Users();
+        User users = new User();
         users.setUsername("admin");
-        users.setPassword("$2a$10$4ufVw1.LyqG2S9qUEn/Ncu4v/R2tmwViB8yJhY6Jv8YkV4b8U2vEG");
-        users.setEnabled(1);
-        Role role = new Role();
-        role.setUsers(users);
-        role.setAuthority("ROLE_ADMIN");
-        users.setRoles(role);
+        users.setPassword("$2a$10$Lpph9iqmvADIN40HpKCZteeNE0F1sObg9w/DGsdF7DOpwZbMxHxoa");
+        Role role = new Role("ROLE_ADMIN");
+        Role role2 = new Role("ROLE_USER");
+        users.setRoles(Collections.singleton(role));
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(users);
         entityManager.persist(role);
+        entityManager.persist(role2);
         entityManager.getTransaction().commit();
         entityManager.close();
     }
