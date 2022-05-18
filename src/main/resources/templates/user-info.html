@@ -30,12 +30,11 @@
         <input type="text" th:field="*{password}" id="password">
         <br>
         <br>
-        <button type="submit" th:name="role" th:value="ROLE_USER">Set role USER</button>
+        <label for="roles">Insert role</label>
+        <input type="text" th:name="role" id="roles"/>
         <br>
         <br>
-        <button type="submit" th:name="role" th:value="ROLE_ADMIN">Set role ADMIN</button>
-        <br>
-        <br>
+        <input type="submit" value="Add new User"/>
 </form>
         <br>
         <br>

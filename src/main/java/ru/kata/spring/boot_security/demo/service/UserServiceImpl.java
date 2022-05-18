@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.RoleDAOImpl;
 import ru.kata.spring.boot_security.demo.DAO.UserDAO;
+import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -42,13 +42,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional
-    public void addUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userDAO.addUser(user);
-    }
-
-    @Override
     public User findById(Long id) {
         return userDAO.findById(id);
     }
@@ -61,13 +54,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void updateWithRole(User user, String role) {
+    public void updateWithRole(User user, String[] role) {
         if (user.getPassword().startsWith("$2a$10$") && user.getPassword().length() == 60) {
             user.setPassword(user.getPassword());
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        user.setRoles(Collections.singleton(roleDAOImpl.findRole(role)));
+        Set<Role> roles = new HashSet<>();
+        Arrays.stream(role).forEach(e -> roles.add(roleDAOImpl.findRole(e)));
+        user.setRoles(roles);
         userDAO.update(user);
     }
 
@@ -88,9 +83,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void addUserWithRole(User user, String role) {
+    public void addUserWithRole(User user, String[] role) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(roleDAOImpl.findRole(role)));
+        Set<Role> roles = new HashSet<>();
+        Arrays.stream(role).forEach(e -> roles.add(roleDAOImpl.findRole(e)));
+        user.setRoles(roles);
         userDAO.addUser(user);
     }
 

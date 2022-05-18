@@ -34,8 +34,8 @@ public class AdminController {
 
     @PostMapping(value = "/saveUser")
     public String saveUser(@ModelAttribute("user") User user,
-                           @RequestParam(value = "role") String role) {
-        userService.addUserWithRole(user, role);
+                           @RequestParam(value = "role") String[] roles) {
+        userService.addUserWithRole(user, roles);
         return "redirect:/admin/listOfUsers";
     }
 
@@ -47,7 +47,7 @@ public class AdminController {
 
     @PatchMapping(value = "/update/u")
     public String update(@ModelAttribute("userToUpdate") User user,
-                         @RequestParam(value = "role") String role) {
+                         @RequestParam(value = "role") String[] role) {
         userService.updateWithRole(user, role);
         return "redirect:/admin/listOfUsers";
     }
