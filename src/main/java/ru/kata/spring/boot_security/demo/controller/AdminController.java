@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.util.Set;
+
 @Controller
 @RequestMapping("/admin")
 @Secured(value = {"ROLE_ADMIN"})
@@ -30,9 +32,10 @@ public class AdminController {
         return "user-info";
     }
 
-    @PostMapping(value = "/saveUser")
-    public String saveUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
+    @RequestMapping(value = "/saveUser")
+    public String saveUser(@ModelAttribute("user") User user,
+                           @RequestParam(value = "role") String role) {
+        userService.addUserWithRole(user, role);
         return "redirect:/admin/listOfUsers";
     }
 
@@ -43,8 +46,9 @@ public class AdminController {
     }
 
     @PatchMapping(value = "/update/u")
-    public String update(@ModelAttribute("userToUpdate") User user) {
-        userService.update(user);
+    public String update(@ModelAttribute("userToUpdate") User user,
+                         @RequestParam(value = "role") String role) {
+        userService.updateWithRole(user, role);
         return "redirect:/admin/listOfUsers";
     }
 

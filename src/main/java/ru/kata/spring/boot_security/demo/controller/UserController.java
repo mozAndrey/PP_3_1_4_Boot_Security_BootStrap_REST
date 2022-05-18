@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-@Secured(value = {"ROLE_ADMIN"})
 public class UserController {
     private UserService userService;
 
@@ -34,7 +33,7 @@ public class UserController {
 
     @PatchMapping(value = "/update/u")
     public String updateUser(@ModelAttribute("userInfo") User user) {
-        userService.update(user);
+        userService.updateUser(user);
         return "redirect:/user/info/"+ user.getUsername();
     }
 }

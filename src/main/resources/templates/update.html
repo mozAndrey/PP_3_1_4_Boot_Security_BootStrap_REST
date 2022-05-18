@@ -34,9 +34,10 @@
         <input type="text" th:field="*{password}" id="pass">
         <br>
         <br>
-        <input type="submit" value="Update User"/>
+        <button type="submit" th:name="role" th:value="ROLE_USER">Update USER</button>
         <br>
         <br>
+        <button type="submit" th:name="role" th:value="ROLE_ADMIN">Update ADMIN</button>
         <a th:href="@{/logout}">Logout</a>
     </form>
 </div>

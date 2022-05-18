@@ -25,7 +25,7 @@ public class Init {
     @Transactional
     public void postConstruct() {
         User users = new User();
-        users.setUsername("admin");
+        users.setUsername("1");
         users.setPassword("$2a$10$Lpph9iqmvADIN40HpKCZteeNE0F1sObg9w/DGsdF7DOpwZbMxHxoa");
         Role role = new Role("ROLE_ADMIN");
         Role role2 = new Role("ROLE_USER");

@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void addUser(User user) {
-        user.setRoles(Collections.singleton(roleDAOImpl.findRole("ROLE_USER")));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.addUser(user);
     }
@@ -62,13 +61,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void update(User user) {
+    public void updateWithRole(User user, String role) {
         if (user.getPassword().startsWith("$2a$10$") && user.getPassword().length() == 60) {
             user.setPassword(user.getPassword());
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        user.setRoles(Collections.singleton(roleDAOImpl.findRole("ROLE_USER")));
+        user.setRoles(Collections.singleton(roleDAOImpl.findRole(role)));
         userDAO.update(user);
     }
 
@@ -80,10 +79,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         try {
-           return userDAO.findByUserName(username);
+            return userDAO.findByUserName(username);
         } catch (UsernameNotFoundException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public void addUserWithRole(User user, String role) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Collections.singleton(roleDAOImpl.findRole(role)));
+        userDAO.addUser(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(User user) {
+        if (user.getPassword().startsWith("$2a$10$") && user.getPassword().length() == 60) {
+            user.setPassword(user.getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        user.setRoles(Collections.singleton(roleDAOImpl.findRole("ROLE_USER")));
+        userDAO.update(user);
     }
 }
