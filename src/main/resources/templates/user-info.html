@@ -30,10 +30,17 @@
         <input type="text" th:field="*{password}" id="password">
         <br>
         <br>
-        <label for="roles">Insert role</label>
-        <input type="text" th:name="role" id="roles"/>
+        <label for="rs">Admin</label>
+        <input type="checkbox" th:name="role" th:value="${adminRole.getAuthority()}" id="rs">
+        <br>
+        <br><label for="rs1">User</label>
+        <input type="checkbox" th:name="role" th:value="${userRole.getAuthority()}" id="rs1">
         <br>
         <br>
+<!--        <label for="roles">Insert role</label>-->
+<!--        <input type="text" th:name="role" id="roles"/>-->
+<!--        <br>-->
+<!--        <br>-->
         <input type="submit" value="Add new User"/>
 </form>
         <br>

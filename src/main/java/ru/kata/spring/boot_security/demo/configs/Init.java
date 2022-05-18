@@ -14,7 +14,7 @@ import java.util.Collections;
 @Component
 @Transactional
 public class Init {
-    private EntityManagerFactory entityManagerFactory;
+    private final EntityManagerFactory entityManagerFactory;
 
     @Autowired
     public Init(EntityManagerFactory entityManagerFactory) {
@@ -27,8 +27,10 @@ public class Init {
         User users = new User();
         users.setUsername("1");
         users.setPassword("$2a$10$Lpph9iqmvADIN40HpKCZteeNE0F1sObg9w/DGsdF7DOpwZbMxHxoa");
-        Role role = new Role("ROLE_ADMIN");
-        Role role2 = new Role("ROLE_USER");
+        Role role = new Role();
+        role.setName("ROLE_ADMIN");
+        Role role2 = new Role();
+        role2.setName("ROLE_USER");
         users.setRoles(Collections.singleton(role));
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();

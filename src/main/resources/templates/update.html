@@ -10,14 +10,10 @@
     <h2>Update User</h2>
     <br>
     <form th:method="PATCH" th:action="@{update/u/}" th:object="${userToUpdate}">
-        <label for="id">ID</label>
+        <label for="id"></label>
         <input type="hidden" th:field="*{id}" id="id">
-        <br>
-        <br>
-        <label for="username">UserName</label>
+        <label for="username"></label>
         <input type="hidden" th:field="*{username}" id="username">
-        <br>
-        <br>
         <label for="name">Name</label>
         <input type="text" th:field="*{name}" id="name">
         <br>
@@ -34,8 +30,12 @@
         <input type="text" th:field="*{password}" id="pass">
         <br>
         <br>
-        <label for="roles">Insert role</label>
-        <input type="text" th:name="role" id="roles"/>
+        <label for="admin">Admin</label>
+        <input type="checkbox" th:name="role" th:value="${adminRole.getAuthority()}" id="admin"/>
+        <br>
+        <br>
+        <label for="user">User</label>
+        <input type="checkbox" th:name="role" th:value="${userRole.getAuthority()}" id="user"/>
         <br>
         <br>
         <input type="submit" value="Update new User"/>

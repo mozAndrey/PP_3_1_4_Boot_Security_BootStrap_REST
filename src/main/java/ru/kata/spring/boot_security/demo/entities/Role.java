@@ -10,8 +10,8 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 public class Role implements GrantedAuthority {
     @Id
@@ -22,14 +22,9 @@ public class Role implements GrantedAuthority {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    private String authority;
-
-    public Role(String authority) {
-        this.authority = authority;
-    }
-
+    private String name;
     @Override
     public String getAuthority() {
-        return authority;
+        return name;
     }
 }

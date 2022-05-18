@@ -6,19 +6,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entities.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.CustomUserDetailsService;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
 @Secured(value = {"ROLE_ADMIN"})
 public class AdminController {
-    private UserService userService;
+    private final CustomUserDetailsService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(CustomUserDetailsService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping(value = "/listOfUsers")
@@ -28,7 +30,10 @@ public class AdminController {
     }
 
     @GetMapping(value = "/addNewUser")
-    public String addNewUser(@ModelAttribute("user") User user) {
+    public String addNewUser(@ModelAttribute("user") User user,
+                             Model model) {
+        model.addAttribute("userRole", roleService.findRole("ROLE_USER"));
+        model.addAttribute("adminRole", roleService.findRole("ROLE_ADMIN"));
         return "user-info";
     }
 
@@ -42,6 +47,8 @@ public class AdminController {
     @GetMapping(value = "/update")
     public String updateUser(Model model, @RequestParam("idToUpdate") Long id) {
         model.addAttribute("userToUpdate", userService.findById(id));
+        model.addAttribute("userRole", roleService.findRole("ROLE_USER"));
+        model.addAttribute("adminRole", roleService.findRole("ROLE_ADMIN"));
         return "update";
     }
 
