@@ -38,15 +38,19 @@
     <br>
     <br>
     <br>
-    <form method="get" action="/admin/delete">
+    <form th:method="delete" th:action="@{/admin/delete}">
         <label for="id">Insert id to delete</label>
-        <input name="id" type="text" id="id">
+        <input type="text" th:name="id" id="id"/>
     </form>
     <br>
     <br>
     <form method="get" action="/admin/update">
         <label for="idToUpdate">Insert id to update</label>
         <input name="idToUpdate" type="text" id="idToUpdate"></form>
+    <br>
+    <br>
+    <a th:href="@{/user/info/{id}(id=${#authentication.getName()})}">User info</a>
+    <br>
     <br>
     <br>
     <a th:href="@{/logout}">Logout</a>

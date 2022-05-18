@@ -32,7 +32,7 @@ public class AdminController {
         return "user-info";
     }
 
-    @RequestMapping(value = "/saveUser")
+    @PostMapping(value = "/saveUser")
     public String saveUser(@ModelAttribute("user") User user,
                            @RequestParam(value = "role") String role) {
         userService.addUserWithRole(user, role);
@@ -52,7 +52,7 @@ public class AdminController {
         return "redirect:/admin/listOfUsers";
     }
 
-    @RequestMapping(value = "/delete")
+    @DeleteMapping(value = "/delete")
     public String deleteUser(@RequestParam("id") long id) {
         userService.deleteUserById(id);
         return "redirect:/admin/listOfUsers";

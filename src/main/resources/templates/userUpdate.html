@@ -9,36 +9,24 @@
     <h2>Update User</h2>
     <br>
     <form th:method="PATCH" th:action="@{/user/update/u/}" th:object="${userInfo}">
-        <label for="id">ID</label>
+        <label for="id"></label>
         <input type="hidden" th:field="*{id}" id="id">
-        <br>
-        <br>
-        <label for="usrname">Username</label>
+        <label for="usrname"></label>
         <input type="hidden" th:field="*{username}" id="usrname">
-        <br>
-        <br>
         <label for="name">Name</label>
         <input type="text" th:field="*{name}" id="name">
-
         <br>
         <br>
-
         <label for="lastName">Last Name</label>
         <input type="text" th:field="*{lastname}" id="lastName">
-
         <br>
         <br>
-
         <label for="email">Email</label>
         <input type="text" th:field="*{email}" id="email">
         <br>
         <br>
         <label for="pass">Password</label>
         <input type="text" th:field="*{password}" id="pass">
-        <br>
-        <br>
-        <label for="r">Roles</label>
-        <input type="hidden" th:field="*{roles}" id="r">
         <br>
         <br>
         <input type="submit" value="Update User"/>
