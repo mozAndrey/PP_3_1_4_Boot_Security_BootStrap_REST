@@ -20,12 +20,12 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String username;
     private String password;
     private String name;
     private String lastname;
     private String email;
+    private short age;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;

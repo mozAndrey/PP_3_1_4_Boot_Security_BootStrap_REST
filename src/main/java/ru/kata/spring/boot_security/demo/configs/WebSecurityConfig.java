@@ -45,9 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-	public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
-		FilterRegistrationBean<HiddenHttpMethodFilter> filterRegBean = new FilterRegistrationBean<>(new HiddenHttpMethodFilter());
-		filterRegBean.setUrlPatterns(List.of("/*"));
-		return filterRegBean;
-	}
+    public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
+        FilterRegistrationBean<HiddenHttpMethodFilter> filterRegBean = new FilterRegistrationBean<>(new HiddenHttpMethodFilter());
+        filterRegBean.setUrlPatterns(List.of("/*"));
+        return filterRegBean;
+    }
 }
