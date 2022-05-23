@@ -7,14 +7,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.service.UserDetailsServiceImpl;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private final UserDetailsServiceImpl userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserDetailsServiceImpl userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
