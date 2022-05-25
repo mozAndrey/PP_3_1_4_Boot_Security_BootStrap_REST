@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -10,12 +9,12 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-public class AdminRestController {
+public class MyRestController {
 
     private final UserService userService;
 
     @Autowired
-    public AdminRestController(UserService userService) {
+    public MyRestController(UserService userService) {
         this.userService = userService;
     }
 
@@ -26,7 +25,7 @@ public class AdminRestController {
 
     @PostMapping("admin/api/save")
     public List<User> saveUser(@RequestBody User user) {
-        userService.addUser(user);
+        userService.saveOrUpdate(user);
         return userService.getListUsers();
     }
 
@@ -37,7 +36,7 @@ public class AdminRestController {
 
     @PutMapping("admin/api/update")
     public void updateUser(@RequestBody User user) {
-        userService.update(user);
+        userService.saveOrUpdate(user);
     }
 
     @GetMapping("/user/api")
