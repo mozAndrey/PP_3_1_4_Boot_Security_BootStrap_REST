@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.DAO.UserDAO;
+import ru.kata.spring.boot_security.demo.DAO.RoleRepository;
+import ru.kata.spring.boot_security.demo.DAO.UserRepository;
 import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
 
@@ -12,57 +13,45 @@ import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserDAO userDAO;
-    private final RoleService roleService;
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
-        this.userDAO = userDAO;
-        this.roleService = roleService;
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public List<User> getListUsers() {
-        return userDAO.getListOfUsers();
-    }
-
-    @Override
-    public User findById(Long id) {
-        return userDAO.findById(id);
+        return userRepository.findAll();
     }
 
     @Transactional
     @Override
     public void deleteUserById(Long id) {
-        userDAO.deleteById(id);
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public User findByUserName(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Transactional
-    public void updateWithRole(User user, String[] role) {
+    public void addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public void update(User user) {
         if (user.getPassword().startsWith("$2a$10$") && user.getPassword().length() == 60) {
             user.setPassword(user.getPassword());
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        Set<Role> roles = new HashSet<>();
-        Arrays.stream(role).forEach(e -> roles.add(roleService.findRole(e)));
-        user.setRoles(roles);
-        userDAO.update(user);
-    }
-
-    @Override
-    public User findByUserName(String username) {
-        return userDAO.findByUserName(username);
-    }
-
-    @Transactional
-    public void addUserWithRole(User user, String[] role) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Set<Role> roles = new HashSet<>();
-        Arrays.stream(role).forEach(e -> roles.add(roleService.findRole(e)));
-        user.setRoles(roles);
-        userDAO.addUser(user);
+        userRepository.save(user);
     }
 }
